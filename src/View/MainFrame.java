@@ -101,6 +101,6 @@ public class MainFrame extends JFrame {
 
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

@@ -113,7 +113,9 @@ public class DBConnection {
 		System.out.println(db);		
 	}
 	
-	
+	public static DBSimulate getDb(){
+		return db;
+	}
 	
 	
 	

@@ -74,8 +74,6 @@ public class Record
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	
 
 	public String getCurrency() {
 		return currency;
@@ -83,6 +81,17 @@ public class Record
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+
+	public String[] getDataArr(){
+		String result[] = new String[6];
+		result[0] = Integer.toString(this.id);
+		result[1] = Double.toString(this.sum);
+		result[2] = this.currency;
+		result[3] = this.category.getName();
+		result[4] = this.description;
+		result[5] = this.date.toString();
+		return result;
 	}
 
 	@Override
