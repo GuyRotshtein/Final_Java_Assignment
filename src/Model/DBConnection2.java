@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class DBConnection2 {
+
+    public DBConnection2(String[] args){
+        go(args);
+
+    }
     /**
      * TODO List:
      * Change Creation of tables and PS to use GBD's 'record' format    --DONE BUT REVERSED. OBJECTS BE DAMMED!!!
@@ -31,7 +36,6 @@ public class DBConnection2 {
     //existing one
     public void go(String[] args){
         parseArguments(args);
-
         System.out.println("Application starting in " + framework + " mode");
         Connection conn = null;
         statements = new ArrayList<Statement>();
@@ -73,22 +77,30 @@ public class DBConnection2 {
              * SQL statements commands against the database.*/
             s = conn.createStatement();
             statements.add(s);
+//            deleteTables(s);
             try {
-                s.execute("create table Cost(id int, costSum double, currency varchar(20), category varchar(40), description varchar(60), costDate Date)");
-                System.out.println("Created table Cost");
 
-                s.execute("create table Categories(cat varchar(40), id int)");
+                String costTableSQL = "CREATE TABLE " +
+                        "Categories(Id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), " +
+                        "name varchar(40))";
+                s.execute(costTableSQL);
                 System.out.println("Created table Categories");
+
+                String createCategoriesTableSQL = "CREATE TABLE Cost(Id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), " +
+                        "costSum double, " +
+                        "currency varchar(20), " +
+                        "category INTEGER REFERENCES Categories (id) NOT NULL , " +
+                        "description varchar(60), " +
+                        "costDate Date)";
+                s.execute(createCategoriesTableSQL);
+                System.out.println("Created table Cost");
             }catch(SQLException e){
+                System.out.println(e.getMessage());
                 if(e.getSQLState() == "X0Y32"){
                     System.out.println("Tables already exist! Moving on...");
                     return;
                 }
             }
-
-
-            // We create both Cost and Category tables
-
 
             //creating prepared statement for Cost and Category tables:
             psCostInsert = conn.prepareStatement(
@@ -114,12 +126,27 @@ public class DBConnection2 {
         }
         catch (SQLException sqle)
         {
+            System.out.println(sqle.toString());
             printSQLException(sqle);
         }
     }
 
+    public void deleteTables(Statement s){
+        try {
+            s.execute("drop table Cost ");
+            System.out.println("COST table deleted");
+            s.execute("drop table Categories ");
+            System.out.println("CATEGORIES table deleted");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+    }
+
     //Insert a cost record into the Cost table
-    void insertRecord(Record rec){
+    public void insertRecord(Record rec){
         try{
             psCostInsert.setInt(1,rec.getId());
             psCostInsert.setDouble(2,rec.getSum());
@@ -136,10 +163,11 @@ public class DBConnection2 {
     }
 
     //Insert a category into the Category table
-    void insertCategory(Category cat){
+    public void insertCategory(Category cat){
         try{
-            psCategoryInsert.setObject(1,cat);
-            psCategoryInsert.setInt(2,cat.getId());
+            psCategoryInsert.setInt(1,cat.getId());
+            psCategoryInsert.setObject(2,cat);
+
             psCategoryInsert.executeUpdate();
             System.out.println("Inserted Category");
         } catch (SQLException sqle)
