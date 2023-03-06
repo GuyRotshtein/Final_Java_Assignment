@@ -53,5 +53,26 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/lib/derby.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/lib/derbyclient.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/lib/derbyrun.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/lib/derbytools.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/lib/derbyoptionaltools.jar!/" />
+          <root url="file://$USER_HOME$/Desktop/Apache" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/demo/programs" />
+          <root url="file://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/demo/programs/scores/java/client" />
+          <root url="file://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/demo/programs/scores/java/common" />
+          <root url="file://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/demo/programs/scores/java/server" />
+          <root url="file://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/demo/programs/simple" />
+          <root url="file://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/demo/programs/vtis/java" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
