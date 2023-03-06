@@ -1,8 +1,26 @@
 <component name="libraryTable">
   <library name="derbyclient">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyclient.jar!/" />
-      <root url="jar://$USER_HOME$/Desktop/Apache/db-derby-10.16.1.1-bin/lib/derbyclient.jar!/" />
+<<<<<<< Updated upstream
+      <root url="jar://C:/Apache/db-derby-10.16.1.1-bin/lib/derbyclient.jar!/" />
+=======
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_es.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_fr.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_hu.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_it.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_ja_JP.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_ko_KR.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_pl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_pt_BR.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_ru.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_zh_CN.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_zh_TW.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbynet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyoptionaltools.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyrun.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyshared.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbytools.jar!/" />
+>>>>>>> Stashed changes
     </CLASSES>
     <JAVADOC />
     <SOURCES />
