@@ -4,6 +4,7 @@ import java.sql.*;
 import java.sql.DriverManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 public class DBConnection2 {
@@ -30,7 +31,9 @@ public class DBConnection2 {
     PreparedStatement psCostInsert, psCategoryInsert;
     PreparedStatement psCostUpdate, psCategoryUpdate;
     ResultSet rs;
+    ResultSetMetaData md;
     Statement s;
+    HashMap<Integer,String> map;
 
     // Connects to the DB upon startup, and creates a DB if there is no
     //existing one
@@ -41,6 +44,7 @@ public class DBConnection2 {
         statements = new ArrayList<Statement>();
         Statement s;
         ResultSet rs = null;
+        ResultSetMetaData md = null;
 
         try {
             Properties props = new Properties(); // connection properties
@@ -195,7 +199,43 @@ public class DBConnection2 {
             printSQLException(sqle);
         }
     }
+    Object[][] ReturnCosts(){
+        try{
 
+            rs = s.executeQuery("SELECT * FROM Costs");
+            md = rs.getMetaData();
+            int rows = 0;
+            HashMap<Integer,String> map = new HashMap();
+            int count = md.getColumnCount();
+            String done = new String();
+            int y=1;
+            while(rs.next()){
+                for(int x = 1; x < md.getColumnCount(); x = x+md.getColumnCount()){
+                    done = rs.getObject(x).toString() + "," + rs.getObject(x+1).toString();
+                }
+                map.put(y, done);
+                y++;
+            }
+            if(!map.isEmpty()){
+                Object[][] data = new Object[map.size()][6];
+                int i = 0;
+                for (HashMap.Entry<Integer,String> entry : map.entrySet() )
+                {
+                    data[i][1] = entry.getKey();
+                   data[i][0] = entry.getValue();
+                   i++;
+                }
+                return data;
+            }
+            else{
+                return null;
+            }
+        } catch (SQLException sqle)
+        {
+            printSQLException(sqle);
+        }
+        return null;
+    }
     /**
      *
      * @param searchYear

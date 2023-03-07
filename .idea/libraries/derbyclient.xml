@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="derbyclient">
     <CLASSES>
-<<<<<<< Updated upstream
+
       <root url="jar://C:/Apache/db-derby-10.16.1.1-bin/lib/derbyclient.jar!/" />
 =======
       <root url="jar://$PROJECT_DIR$/../../../../../Apache/db-derby-10.16.1.1-bin/lib/derbyLocale_es.jar!/" />

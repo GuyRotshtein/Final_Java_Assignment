@@ -1,9 +1,4 @@
 package ViewVmodel;
-
-<<<<<<< Updated upstream
-public class ViewModel {
-	
-=======
 import Model.Category;
 import Model.DBConnection;
 import Model.DBConnection2;
@@ -21,16 +16,17 @@ public class ViewModel {
 
     public ViewModel(String[] args){
         derbyConnection = new DBConnection2(args);
-//        DBConnection.connectDB();
+
         start();
     }
 
 
 
     public void start(){
-//        insertDefaultData();
-//        Object data[][] = getTableData();
-//        gui = new MainFrame(TABLE_COLUMNS, data);
+        insertDefaultData();
+        Object data[][] = getTableData();
+        gui = new MainFrame(TABLE_COLUMNS, data);
+
 
     }
 
@@ -63,7 +59,4 @@ public class ViewModel {
 //        return null;
 
     }
-
-
->>>>>>> Stashed changes
 }

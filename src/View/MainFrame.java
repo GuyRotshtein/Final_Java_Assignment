@@ -40,6 +40,7 @@ public class MainFrame extends JFrame {
 	private ActionListener buttonListener;
 	private JScrollPane sp;
 	public MainFrame(String[] tableColumns, Object[][] tableData)
+
 	{
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* CONTENT PANE SETUP */
