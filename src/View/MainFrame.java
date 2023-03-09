@@ -30,14 +30,17 @@ public class MainFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTable expanseTable;
-	private JFrame myFrame;
+	private JFrame addCostFrame;
 	private JButton btCost;
 	private JButton Category;
 	private JButton ShowCategory;
 	private JButton SearchCategory;
+	private JButton btAddCost;
 	private JTable Mtable ;
-
+	private JTextField textField;
+	private JTextField costId, costName, costSum, costCurr, costCat, costDate;
 	private ActionListener buttonListener;
+	private OpenWindowListener windowListener;
 	private JScrollPane sp;
 	public MainFrame(String[] tableColumns, Object[][] tableData)
 	{
@@ -49,6 +52,7 @@ public class MainFrame extends JFrame {
 		this.getContentPane().setLayout(pageLayout);
 		this.getContentPane().setBackground(Color.darkGray);
 //		buttonListener = new MyButtonListen+er();
+		windowListener = new OpenWindowListener();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* BUTTON SETUP */
 
@@ -57,7 +61,7 @@ public class MainFrame extends JFrame {
 		buttonPanel.setLayout(new BoxLayout(buttonPanel ,BoxLayout.LINE_AXIS));
 
 		btCost = new JButton("Add Expense");
-		btCost.addActionListener(buttonListener);
+		btCost.addActionListener(windowListener);
 		buttonPanel.add(btCost);
 		buttonPanel.add(Box.createRigidArea(new Dimension(8, 20)));
 
@@ -95,6 +99,28 @@ public class MainFrame extends JFrame {
 		this.add(tablePanel);
 		this.add(Box.createRigidArea(new Dimension(5, 20)));
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/* ADD COST PANEL SETUP */
+		addCostFrame = new JFrame("Add new cost");
+		JPanel addCostPanel = new JPanel();
+		BoxLayout ACBoxLayout = new BoxLayout(addCostPanel,BoxLayout.PAGE_AXIS);
+
+		addCostFrame.setContentPane(addCostPanel);
+		addCostFrame.getContentPane().setLayout(ACBoxLayout);
+		addCostFrame.getContentPane().setBackground(Color.darkGray);
+		textField = new JTextField(12);
+		addCostPanel.add(textField);
+		addCostFrame.add(Box.createRigidArea(new Dimension(8, 20)));
+		addCostFrame.setSize(512,400);
+		addCostFrame.setVisible(false);
+		addCostFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/* ADD COST FRAME BUTTON SETUP */
+		JPanel ACButtonPanel = new JPanel();
+		ACButtonPanel.setBackground(Color.darkGray);
+		ACButtonPanel.setLayout(new BoxLayout(buttonPanel ,BoxLayout.LINE_AXIS));
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* FINAL SETUP */
 
 		this.setSize(1024, 786);
@@ -103,4 +129,26 @@ public class MainFrame extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/* ACTION LISTENER SETUP */
+	class OpenWindowListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			String text = null;
+			Object source = e.getSource();
+			if(source==btCost)
+			{
+				addCostFrame.setVisible(true);
+				text = "One";
+			}
+			else if(source==Category)
+			{
+				text = "Two";
+			}
+			textField.setText(text);
+		}
+	}
+
 }
