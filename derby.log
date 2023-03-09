@@ -1,18 +1,12 @@
 ----------------------------------------------------------------
-<<<<<<< Updated upstream
-Thu Mar 02 11:56:32 IST 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-0186-a1c0-7ecf-00001f6dbc48 
-on database directory D:\Users\Guyro\Projects\Java Projects\Final_Assignment\derbyDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@4d7e1886 
-=======
-Mon Mar 06 12:16:46 IST 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-0186-b66c-74de-00000ec92898 
+Thu Mar 09 14:03:37 IST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-0186-c641-5c17-00000ec0cd08 
 on database directory C:\Users\USER\Documents\GitHub\Final_Java_Assignment\derbyDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@2f0e140b 
->>>>>>> Stashed changes
 Loaded from file:/C:/Apache/db-derby-10.16.1.1-bin/lib/derby.jar
-java.vendor=Amazon.com Inc.
-java.runtime.version=18.0.2+9-FR
-user.dir=D:\Users\Guyro\Projects\Java Projects\Final_Assignment
-os.name=Windows 10
+java.vendor=Oracle Corporation
+java.runtime.version=18.0.2.1+1-1
+user.dir=C:\Users\USER\Documents\GitHub\Final_Java_Assignment
+os.name=Windows 11
 os.arch=amd64
 os.version=10.0
 derby.system.home=null

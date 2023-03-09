@@ -1,19 +1,13 @@
 import Model.DBConnection;
 import Model.DBConnection2;
 import View.MainFrame;
+import ViewVmodel.ViewModel;
 
 public class Main {
     public static void main(String[] args)
     {
-
-<<<<<<< Updated upstream
-    		//DBConnection.connectDB();
-            DBConnection2 dbConnect = new DBConnection2();
-            dbConnect.go(args);
-    		MainFrame mf = new MainFrame();
-=======
             ViewModel vm = new ViewModel(args);
->>>>>>> Stashed changes
+
 		
     	
     	

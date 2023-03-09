@@ -10,7 +10,6 @@ public class DBConnection2 {
 
     public DBConnection2(String[] args){
         go(args);
-
     }
     /**
      * TODO List:
@@ -44,6 +43,7 @@ public class DBConnection2 {
 
         try {
             Properties props = new Properties(); // connection properties
+
             // providing a username and password is optional in the embedded
             // and derbyclient frameworks
             //props.put("user", "user1");
@@ -51,7 +51,7 @@ public class DBConnection2 {
 
             String dbName = "derbyDB"; // the name of the database
             try {
-                Class.forName(driver);
+                 Class.forName(driver);
             } catch(java.lang.ClassNotFoundException e) {
                 System.out.println("uh-oh!");
             }
@@ -81,7 +81,8 @@ public class DBConnection2 {
             try {
 
                 String costTableSQL = "CREATE TABLE " +
-                        "Categories(Id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), " +
+                        "Categories(Id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), "
+                        +
                         "name varchar(40))";
                 s.execute(costTableSQL);
                 System.out.println("Created table Categories");
@@ -108,7 +109,7 @@ public class DBConnection2 {
             statements.add(psCostInsert);
 
             psCategoryInsert = conn.prepareStatement(
-                    "insert into Categories values (?,?)");
+                    "insert into Categories (name) values (?)");
             statements.add(psCategoryInsert);
 
 
@@ -165,13 +166,15 @@ public class DBConnection2 {
     //Insert a category into the Category table
     public void insertCategory(Category cat){
         try{
-            psCategoryInsert.setInt(1,cat.getId());
-            psCategoryInsert.setObject(2,cat);
+            psCategoryInsert.setString(2, cat.getName());
+//            psCategoryInsert.setInt(1,cat.getId());
+//            psCategoryInsert.setObject(2,cat);
 
             psCategoryInsert.executeUpdate();
             System.out.println("Inserted Category");
         } catch (SQLException sqle)
         {
+            sqle.printStackTrace();
             printSQLException(sqle);
         }
     }
@@ -230,6 +233,7 @@ public class DBConnection2 {
             printSQLException(sqle);
         }
     }
+
     //Shuts down the DB connection and all open resources. To be used when closing the application
     void shutdown(){
         if (framework.equals("embedded"))
@@ -260,6 +264,7 @@ public class DBConnection2 {
                 }
             }
         }
+
         // release all open resources to avoid unnecessary memory usage
 
         // ResultSet

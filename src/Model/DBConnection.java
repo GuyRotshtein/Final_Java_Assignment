@@ -8,7 +8,9 @@ public class DBConnection {
 	
 	private static DBSimulate db;
 	
-	
+
+
+
 	public static void connectDB() {
 		db = new DBSimulate();
 		loadMockData();
@@ -110,7 +112,7 @@ public class DBConnection {
 		addRecord(rec7);
 		addRecord(rec8);
 		
-		System.out.println(db);		
+//		System.out.println(db);
 	}
 	
 	public static DBSimulate getDb(){

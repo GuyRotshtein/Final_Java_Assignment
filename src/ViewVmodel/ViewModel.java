@@ -1,34 +1,28 @@
 package ViewVmodel;
 
-<<<<<<< Updated upstream
-public class ViewModel {
-	
-=======
-import Model.Category;
-import Model.DBConnection;
-import Model.DBConnection2;
+import Model.*;
+
 import Model.Record;
 import View.MainFrame;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class ViewModel {
+public class ViewModel
+{
 	private MainFrame gui;
     private DBConnection oldDB;
     private String[] TABLE_COLUMNS = {"ID","AMOUNT", "CURRENCY" ,"CATEGORY", "DESCRIPTION", "DATE"};
-    private DBConnection2 derbyConnection;
+    private DerbyConnection derbyConnection;
 
     public ViewModel(String[] args){
-        derbyConnection = new DBConnection2(args);
-//        DBConnection.connectDB();
+        DBConnection.connectDB();
+        derbyConnection = new DerbyConnection(args);
         start();
     }
 
 
 
     public void start(){
-//        insertDefaultData();
+        insertDefaultData();
 //        Object data[][] = getTableData();
 //        gui = new MainFrame(TABLE_COLUMNS, data);
 
@@ -40,10 +34,11 @@ public class ViewModel {
 //            derbyConnection.insertRecord(r);
 //        }
 
-        ArrayList<Category> migrationCategories = DBConnection.getAllCategories();
-        for(Category cat : migrationCategories){
-            derbyConnection.insertCategory(cat);
-        }
+        ArrayList<Category> migrationCategories = oldDB.getAllCategories();
+//        derbyConnection.insertCategory(migrationCategories.get(0));
+//        for(Category cat : migrationCategories){
+//            derbyConnection.insertCategory(cat);
+//        }
 
 
     }
@@ -65,5 +60,5 @@ public class ViewModel {
     }
 
 
->>>>>>> Stashed changes
+
 }
