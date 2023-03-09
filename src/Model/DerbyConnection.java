@@ -1,14 +1,12 @@
 package Model;
 
+import View.MainFrame;
+
 import javax.swing.plaf.nimbus.State;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 public class DerbyConnection {
@@ -18,6 +16,7 @@ public class DerbyConnection {
     private String framework = "embedded";
     private String protocol = "jdbc:derby:";
     private String DBNAME = "derbyDB";
+    private String[] TABLE_COLUMNS = {"ID","AMOUNT", "CURRENCY" ,"CATEGORY", "DESCRIPTION", "DATE"};
     ////////////////////////////////////////////////
 
     private ArrayList<Statement> statements;
@@ -27,7 +26,7 @@ public class DerbyConnection {
     private PreparedStatement psCategoryUpdate, psCostUpdate;
     private PreparedStatement psCategoryDelete, psCostDelete;
 
-
+    private MainFrame gui;
 
     public DerbyConnection(String[] args){
         System.out.println("Application starting in " + framework + " mode");
@@ -64,6 +63,7 @@ public class DerbyConnection {
             createCostTable(sqlCmd);
             conn.commit();
             getAllCategories(sqlCmd);
+            gui = new MainFrame(TABLE_COLUMNS, getCostData(sqlCmd));
         }
         catch (Exception e){
             System.out.println(e.hashCode());
@@ -126,6 +126,9 @@ public class DerbyConnection {
         try {
             psCategoryInsert = conn.prepareStatement(
                     "insert into Categories (Name) values (?)");
+            //psCostInsert = conn.prepareStatement(
+            //        "insert into Cost values (?,?,?,?,?,?)");
+            //statements.add(psCostInsert);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -152,8 +155,55 @@ public class DerbyConnection {
         }
     }
 
+    public void insertCost(int id, double sum, String curr, int cat, String desc, Date date){
+        try{
+            psCostInsert.setInt(1,id);
+            psCostInsert.setDouble(2,sum);
+            psCostInsert.setString(3,curr);
+            psCostInsert.setInt(4,cat);
+            psCostInsert.setString(5,desc);
+            psCostInsert.setDate(6,date);
+            psCostInsert.executeUpdate();
+            System.out.println("Inserted Record");
+        } catch (SQLException sqle)
+        {
+            sqle.printStackTrace();
+        }
+    }
 
+    private Object[][] getCostData(Statement s) {
+        try{
+            String rowQuery = "SELECT COUNT (*) FROM Cost";
+            ResultSet rs = s.executeQuery(rowQuery);
+            int rows = 0;
+            if(rs.next()){
+                rows = (int)rs.getLong(1);
+                System.out.println("We found "+ rows + " rows!!");
+            }
+            else{
+                System.out.println("No rows found!!!");
+                return null;
+            }
+            String query = "SELECT * FROM Cost";
+            rs = s.executeQuery(query);
+            ResultSetMetaData md = rs.getMetaData();
+            int cols = 6;
+            String[][] data = new String[rows][cols];
+            for(int r = 0; r < rows; r++){
+                for(int c = 0; c < cols ; c++ ){
+                    data[r][c] = DBConnection.getDb().getAllRecords().get(r).getDataArr()[c];
+                }
+                r++;
+            }
 
-
+            return (Object[][]) data;
+//            return null;
+        } catch (SQLException sqle)
+        {
+            sqle.printStackTrace();
+        }
+        System.out.println("oopsie! didn't return :P");
+        return null;
+    }
 
 }

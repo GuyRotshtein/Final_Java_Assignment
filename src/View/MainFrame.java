@@ -56,7 +56,7 @@ public class MainFrame extends JFrame {
 		buttonPanel.setBackground(Color.darkGray);
 		buttonPanel.setLayout(new BoxLayout(buttonPanel ,BoxLayout.LINE_AXIS));
 
-		btCost = new JButton("Add Expanse");
+		btCost = new JButton("Add Expense");
 		btCost.addActionListener(buttonListener);
 		buttonPanel.add(btCost);
 		buttonPanel.add(Box.createRigidArea(new Dimension(8, 20)));
