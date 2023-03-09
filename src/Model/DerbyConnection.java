@@ -83,7 +83,7 @@ public class DerbyConnection {
             String costTableSQL = "" +
                     "CREATE TABLE Categories" +
                     "(Id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), " +
-                    "NAME varchar(40))";
+                    "Name varchar(40))";
             s.execute(costTableSQL);
             System.out.println("Created table Categories");
 
@@ -125,7 +125,7 @@ public class DerbyConnection {
     public void prepareStatements(){
         try {
             psCategoryInsert = conn.prepareStatement(
-                    "insert into Categories (NAME) values (?)");
+                    "insert into Categories (Name) values (?)");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
