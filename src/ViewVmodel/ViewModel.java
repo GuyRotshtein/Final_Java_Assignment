@@ -4,6 +4,8 @@ import Model.*;
 
 import Model.Record;
 import View.MainFrame;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ViewModel
@@ -18,8 +20,6 @@ public class ViewModel
         derbyConnection = new DerbyConnection(args);
         start();
     }
-
-
 
     public void start(){
         insertDefaultData();
@@ -59,6 +59,9 @@ public class ViewModel
 
     }
 
+    public void AddCategory(String name){
+            derbyConnection.insertCategory(name);
+    }
 
 
 }

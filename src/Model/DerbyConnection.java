@@ -126,9 +126,9 @@ public class DerbyConnection {
         try {
             psCategoryInsert = conn.prepareStatement(
                     "insert into Categories (Name) values (?)");
-            //psCostInsert = conn.prepareStatement(
-            //        "insert into Cost values (?,?,?,?,?,?)");
-            //statements.add(psCostInsert);
+            psCostInsert = conn.prepareStatement(
+                    "insert into Cost (costSum,currency,category,description,costDate)values (?,?,?,?,?)");
+            statements.add(psCostInsert);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -154,15 +154,37 @@ public class DerbyConnection {
 //            printSQLException(sqle);
         }
     }
-
-    public void insertCost(int id, double sum, String curr, int cat, String desc, Date date){
+    public void insertCategory(String catStr){
         try{
-            psCostInsert.setInt(1,id);
-            psCostInsert.setDouble(2,sum);
-            psCostInsert.setString(3,curr);
-            psCostInsert.setInt(4,cat);
-            psCostInsert.setString(5,desc);
-            psCostInsert.setDate(6,date);
+            psCategoryInsert.setString(1, catStr);
+            psCategoryInsert.executeUpdate();
+            System.out.println("Inserted Category");
+        } catch (SQLException sqle)
+        {
+            sqle.printStackTrace();
+//            printSQLException(sqle);
+        }
+    }
+
+    public boolean checkCategory(String catName){
+        try{
+            String query = "SELECT * FROM Category WHERE Name=" + catName;
+            ResultSet rs = sqlCmd.executeQuery(query);
+            return true;
+        } catch (SQLException sqle)
+        {
+            sqle.printStackTrace();
+//            printSQLException(sqle);
+        }
+        return true;
+    }
+    public void insertCost(double sum, String curr, int cat, String desc, Date date){
+        try{
+            psCostInsert.setDouble(1,sum);
+            psCostInsert.setString(2,curr);
+            psCostInsert.setInt(3,cat);
+            psCostInsert.setString(4,desc);
+            psCostInsert.setDate(5,date);
             psCostInsert.executeUpdate();
             System.out.println("Inserted Record");
         } catch (SQLException sqle)
@@ -190,12 +212,11 @@ public class DerbyConnection {
             int cols = 6;
             String[][] data = new String[rows][cols];
             for(int r = 0; r < rows; r++){
-                for(int c = 0; c < cols ; c++ ){
-                    data[r][c] = DBConnection.getDb().getAllRecords().get(r).getDataArr()[c];
+                for(int c = 0; c < cols; c++){
+//                    System.out.println(rs.getString(c));
+                    data[r][c] = rs.getString(c);
                 }
-                r++;
             }
-
             return (Object[][]) data;
 //            return null;
         } catch (SQLException sqle)

@@ -31,14 +31,18 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JTable expanseTable;
 	private JFrame addCostFrame;
+	private JFrame addCatFrame;
+	private JLabel addCatLabel;
 	private JButton btCost;
 	private JButton Category;
 	private JButton ShowCategory;
 	private JButton SearchCategory;
 	private JButton btAddCost;
+	private JButton btAddCat;
 	private JTable Mtable ;
 	private JTextField textField;
 	private JTextField costId, costName, costSum, costCurr, costCat, costDate;
+	private JTextField catName;
 	private ActionListener buttonListener;
 	private OpenWindowListener windowListener;
 	private JScrollPane sp;
@@ -66,7 +70,7 @@ public class MainFrame extends JFrame {
 		buttonPanel.add(Box.createRigidArea(new Dimension(8, 20)));
 
 		Category = new JButton("Add Category");
-		Category.addActionListener(buttonListener);
+		Category.addActionListener(windowListener);
 		buttonPanel.add(Category);
 		buttonPanel.add(Box.createRigidArea(new Dimension(8, 20)));
 
@@ -99,13 +103,13 @@ public class MainFrame extends JFrame {
 		this.add(tablePanel);
 		this.add(Box.createRigidArea(new Dimension(5, 20)));
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/* ADD COST PANEL SETUP */
+		/* ADD COST FRAME SETUP */
 		addCostFrame = new JFrame("Add new cost");
 		JPanel addCostPanel = new JPanel();
-		BoxLayout ACBoxLayout = new BoxLayout(addCostPanel,BoxLayout.PAGE_AXIS);
+		BoxLayout AddCostBoxLayout = new BoxLayout(addCostPanel,BoxLayout.PAGE_AXIS);
 
 		addCostFrame.setContentPane(addCostPanel);
-		addCostFrame.getContentPane().setLayout(ACBoxLayout);
+		addCostFrame.getContentPane().setLayout(AddCostBoxLayout);
 		addCostFrame.getContentPane().setBackground(Color.darkGray);
 		textField = new JTextField(12);
 		addCostPanel.add(textField);
@@ -116,16 +120,59 @@ public class MainFrame extends JFrame {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* ADD COST FRAME BUTTON SETUP */
-		JPanel ACButtonPanel = new JPanel();
-		ACButtonPanel.setBackground(Color.darkGray);
-		ACButtonPanel.setLayout(new BoxLayout(buttonPanel ,BoxLayout.LINE_AXIS));
+		JPanel AddCostButtonPanel = new JPanel();
+		AddCostButtonPanel.setBackground(Color.darkGray);
+		AddCostButtonPanel.setLayout(new BoxLayout(buttonPanel ,BoxLayout.LINE_AXIS));
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/* ADD CATEGORY FRAME SETUP */
+		addCatFrame = new JFrame("Add new category");
+		JPanel addCatPanel = new JPanel();
+		BoxLayout AddCatBoxLayout = new BoxLayout(addCatPanel,BoxLayout.PAGE_AXIS);
+		addCatPanel.setBackground(Color.darkGray);;
+		addCatFrame.setContentPane(addCatPanel);
+		addCatFrame.getContentPane().setLayout(AddCatBoxLayout);
+		addCatFrame.getContentPane().setBackground(Color.darkGray);
+		addCatFrame.setSize(512,200);
+		addCatFrame.setVisible(false);
+		addCatFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/* ADD CATEGORY TEXTFIELD SETUP */
+		JPanel addCatTextPanel = new JPanel();
+		addCatTextPanel.setBackground(Color.darkGray);
+//		addCatTextPanel.setLayout(new BoxLayout(addCatTextPanel,BoxLayout.PAGE_AXIS));
+		addCatLabel = new JLabel("New category's name:");
+		addCatLabel.setForeground(Color.gray);
+		catName = new JTextField(30);
+
+
+		addCatTextPanel.add(Box.createRigidArea(new Dimension(5, 20)));
+		addCatTextPanel.add(catName);
+
+		addCatPanel.add(Box.createRigidArea(new Dimension(5, 40)));
+		addCatPanel.add(addCatLabel);
+		addCatPanel.add(addCatTextPanel);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/* ADD CATEGORY BUTTON SETUP */
+		JPanel catButtonPanel = new JPanel();
+		catButtonPanel.setBackground(Color.darkGray);
+		btAddCat = new JButton("Add to Categories");
+		btAddCat.addActionListener(buttonListener);
+		catButtonPanel.add(btAddCat);
+
+		addCatPanel.add(Box.createRigidArea(new Dimension(8, 20)));
+		addCatPanel.add(catButtonPanel);
+		addCatPanel.add(Box.createRigidArea(new Dimension(5, 20)));
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* FINAL SETUP */
 
 		this.setSize(1024, 786);
-
+		addCatFrame.setLocationRelativeTo(null);
 		this.setLocationRelativeTo(null);
+		addCatFrame.setResizable(false);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -141,11 +188,12 @@ public class MainFrame extends JFrame {
 			if(source==btCost)
 			{
 				addCostFrame.setVisible(true);
-				text = "One";
+				text = "";
 			}
 			else if(source==Category)
 			{
-				text = "Two";
+				addCatFrame.setVisible(true);
+				catName.setText("");
 			}
 			textField.setText(text);
 		}
