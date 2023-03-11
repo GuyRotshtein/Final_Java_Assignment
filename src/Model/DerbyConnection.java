@@ -34,10 +34,8 @@ public class DerbyConnection {
 //    private MainFrame gui;
 
     public DerbyConnection(){
-        System.out.println("Application starting in " + framework + " mode");
         createConnection();
         prepareDB();
-        //prepareStatements();
     }
 
     public void createConnection(){
@@ -58,7 +56,7 @@ public class DerbyConnection {
 
     public void prepareDB(){
         try {
-            deleteTables();
+//            deleteTables();
             createCategories();
             createCostTable();
         }
@@ -277,7 +275,7 @@ public class DerbyConnection {
             psCostInsert.setDate(5,c.getDate()); // check date class
             psCostInsert.executeUpdate();
             System.out.println("Inserted Record\t" + c);
-            psCategoryInsert.close();
+            psCostInsert.close();
         } catch (SQLException sqle)
         {
             sqle.printStackTrace();

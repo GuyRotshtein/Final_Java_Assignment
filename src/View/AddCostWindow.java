@@ -100,8 +100,8 @@ public class AddCostWindow extends JFrame {
                         Integer.parseInt(dayText.getText())
                 );
                 viewModel.createCost(sum, currency, categoryName,description, date );
+                dispose();
 
-                System.out.println(temp);
             }
         });
 
@@ -109,7 +109,6 @@ public class AddCostWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-
 
 
     }

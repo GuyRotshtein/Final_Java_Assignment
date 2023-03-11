@@ -29,7 +29,8 @@ public class ViewModel
     }
 
     public void start(){
-        insertDefaultData();
+//        insertDefaultData();
+        updateTableData();
         gui = new MainFrame(this);
     }
 
@@ -58,12 +59,15 @@ public class ViewModel
 
     private void updateTableData(){
         ArrayList<Cost> allCosts = derbyConnection.getAllCosts();
+//        System.out.println(allCosts.size());
         int rows = allCosts.size();
         int cols = allCosts.get(0).getDataArr().length;
         tableData = new String[rows][cols];
         for(int r = 0; r < rows; r++){
             tableData[r] = allCosts.get(r).getDataArr();
         }
+        if(gui != null) gui.updateTableModel();
+
     }
 
     public Object[][] getTableData()

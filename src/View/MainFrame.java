@@ -92,9 +92,10 @@ public class MainFrame extends JFrame {
 		JPanel tablePanel = new JPanel(null);
 		tablePanel.setBackground(Color.darkGray);;
 		tablePanel.setSize(new Dimension(800, 600));
+		Object[][] tableData = viewmodel.getTableData();
 		String tableColumns[] = viewmodel.getTableColumns();
+		costTable = new JTable(tableData.length+1, tableColumns.length);
 		updateTableModel();
-		costTable.setModel(tableModel);
 		costTable.setGridColor(Color.GRAY);
 		costTable.setFont(new Font("Arial",Font.BOLD, 14));
 		JScrollPane scrollPane = new JScrollPane(costTable);
@@ -164,9 +165,10 @@ public class MainFrame extends JFrame {
 	}
 
 	public void updateTableModel() {
-		Object[][] tableData = viewmodel.getTableData();
-		costTable = new JTable(tableData.length+1, tableColumns.length);
-		tableModel = new DefaultTableModel(tableData, tableColumns);
+		tableModel = new DefaultTableModel(viewmodel.getTableData(), viewmodel.getTableColumns());
+		costTable.setModel(tableModel);
+		repaint();
+		revalidate();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
