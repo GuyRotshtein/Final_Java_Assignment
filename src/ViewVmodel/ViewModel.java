@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 
 
-public class ViewModel
+public class ViewModel  extends Thread
 {
 	private MainFrame gui;
     private DBConnection oldDB;
@@ -133,4 +133,9 @@ public class ViewModel
         return tableData;
     }
 
+    public void deleteCost(String costId){
+        int id = Integer.parseInt(costId);
+        derbyConnection.removeCost(id);
+        updateTableData();
+    }
 }

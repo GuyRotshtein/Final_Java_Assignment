@@ -17,7 +17,7 @@ public class SearchCostWindow extends JFrame{
     private ViewModel viewModel;
     private JTable costTable;
     private DefaultTableModel tableModel;
-    private JLabel errorMessage;
+
     public SearchCostWindow(ViewModel controller){
         viewModel = controller;
         this.setTitle("Search costs");
@@ -56,7 +56,11 @@ public class SearchCostWindow extends JFrame{
 
         yearBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                try{
                     updateTableModel(Integer.parseInt(yearText.getText()));
+                } catch (NumberFormatException numE){
+                }
+
             }
         });
 
@@ -71,7 +75,10 @@ public class SearchCostWindow extends JFrame{
 
         monthBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                try{
                 updateTableModel(Integer.parseInt(yearText.getText()),Integer.parseInt(monthText.getText()));
+                } catch (NumberFormatException numE){
+                }
             }
         });
         searchMonthPanel.add(monthBtn);

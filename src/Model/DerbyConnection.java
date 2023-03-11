@@ -101,7 +101,7 @@ public class DerbyConnection {
         ArrayList<Category> result = new ArrayList<>();
         try {
             sqlCmd = conn.createStatement();
-            System.out.println("Printing all categories");
+//            System.out.println("Printing all categories");
             String test = "SELECT * FROM Categories";
             ResultSet results = sqlCmd.executeQuery(test);
             while (results.next()){
@@ -229,7 +229,7 @@ public class DerbyConnection {
         ArrayList<Cost> allCosts = new ArrayList<>();
         try {
             sqlCmd = conn.createStatement();
-            System.out.println("Printing all categories");
+//            System.out.println("Printing all categories");
             String test = "SELECT * FROM Cost";
             ResultSet results = sqlCmd.executeQuery(test);
 
@@ -285,7 +285,7 @@ public class DerbyConnection {
     {
         try
         {
-            System.out.println("we getCostdata in void ");
+            //System.out.println("we getCostdata in void ");
             String rowQuery = "SELECT COUNT (*) FROM Cost";
             System.out.println(rowQuery);
             ResultSet rs = s.executeQuery(rowQuery);
@@ -311,7 +311,7 @@ public class DerbyConnection {
         ArrayList<Cost> searchCosts = new ArrayList<>();
         try {
             sqlCmd = conn.createStatement();
-            System.out.println("Printing all categories");
+            //System.out.println("Printing all categories");
             String test = "SELECT * FROM Cost WHERE YEAR(costDate)=" + searchYear;
             ResultSet results = sqlCmd.executeQuery(test);
 
@@ -342,7 +342,7 @@ public class DerbyConnection {
         ArrayList<Cost> searchCosts = new ArrayList<>();
         try {
             sqlCmd = conn.createStatement();
-            System.out.println("Printing all categories");
+            //System.out.println("Printing all categories");
             String test = "SELECT * FROM Cost WHERE YEAR(costDate)=" + searchYear + " AND MONTH(costDate)=" +searchMonth;
             ResultSet results = sqlCmd.executeQuery(test);
 
@@ -365,6 +365,19 @@ public class DerbyConnection {
             e.printStackTrace();
         }
         return searchCosts;
+    }
+
+    public void removeCost(int id){
+        String query = "DELETE  FROM Cost WHERE Id="+id;
+        try{
+            sqlCmd = conn.createStatement();
+            sqlCmd.execute(query);
+
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /*

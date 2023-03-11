@@ -29,7 +29,7 @@ public class MainFrame extends JFrame {
 	private JLabel addCatLabel;
 	private JButton btCost;
 	private JButton Category;
-	private JButton ShowCategory;
+	private JButton RemoveCost;
 	private JButton SearchCosts;
 	private JButton Add;
 	private JButton Add_catagory;
@@ -73,9 +73,9 @@ public class MainFrame extends JFrame {
 		buttonPanel.add(Category);
 		buttonPanel.add(Box.createRigidArea(new Dimension(8, 20)));
 
-		ShowCategory = new JButton("Show Category");
-		ShowCategory.addActionListener(buttonListener);
-		buttonPanel.add(ShowCategory);
+		RemoveCost = new JButton("Remove Expense");
+		RemoveCost.addActionListener(windowListener);
+		buttonPanel.add(RemoveCost);
 		buttonPanel.add(Box.createRigidArea(new Dimension(8, 20)));
 
 
@@ -202,7 +202,10 @@ public class MainFrame extends JFrame {
 			else if(source==SearchCosts)
 			{
 				SearchCostWindow searchCostWindow = new SearchCostWindow(viewmodel);
-
+			}
+			else if (source==RemoveCost)
+			{
+				RemoveCostWindow removeCostWindow = new RemoveCostWindow(viewmodel);
 			}
 //			textField.setText(text);
 		}

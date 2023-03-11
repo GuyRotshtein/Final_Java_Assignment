@@ -3,7 +3,7 @@ import Model.DBConnection2;
 import View.MainFrame;
 import ViewVmodel.ViewModel;
 
-public class Main {
+public class Main{
     public static void main(String[] args)
     {
             ViewModel vm = new ViewModel();
