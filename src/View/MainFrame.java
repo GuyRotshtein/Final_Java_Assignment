@@ -41,7 +41,9 @@ public class MainFrame extends JFrame {
 	private JButton btAddCat;
 	private JTable Mtable ;
 	private JTextField textField;
-	private JTextField costId, costName, costSum, costCurr, costCat, costDate;
+	private JTextField costName, costSum, costCurr, costCat, costDate;
+	private JLabel costNameL, costSumL, costCurrL, costCatL, costDateL;
+	private JComboBox CatList;
 	private JTextField catName;
 	private ActionListener buttonListener;
 	private OpenWindowListener windowListener;
@@ -112,11 +114,25 @@ public class MainFrame extends JFrame {
 		addCostFrame.getContentPane().setLayout(AddCostBoxLayout);
 		addCostFrame.getContentPane().setBackground(Color.darkGray);
 		textField = new JTextField(12);
-		addCostPanel.add(textField);
+//		addCostPanel.add(textField);
 		addCostFrame.add(Box.createRigidArea(new Dimension(8, 20)));
 		addCostFrame.setSize(512,400);
 		addCostFrame.setVisible(false);
 		addCostFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/* ADD COST LABEL SETUP */
+		JPanel AddCostLabelPanel = new JPanel();
+		AddCostLabelPanel.setBackground(Color.darkGray);
+		AddCostLabelPanel.setLayout(new BoxLayout(buttonPanel ,BoxLayout.LINE_AXIS));
+		costSumL = new JLabel("Sum:");
+		AddCostLabelPanel.add(costSumL);
+		AddCostLabelPanel.add(Box.createRigidArea(new Dimension(8, 20)));
+
+		costCurrL = new JLabel("Currency:");
+		costCatL = new JLabel("Category:");
+		costNameL = new JLabel("Description:");
+		costDateL = new JLabel("Date");
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* ADD COST FRAME BUTTON SETUP */

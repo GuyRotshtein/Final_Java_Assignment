@@ -63,5 +63,10 @@ public class ViewModel
             derbyConnection.insertCategory(name);
     }
 
+    public String[] CategoryListString(){
+        // get all categories, take them and insert them into string list
+        
+        return String[];
+    }
 
 }
