@@ -306,6 +306,66 @@ public class DerbyConnection {
 
     }
 
+    public ArrayList<Cost> searchCosts(int year){
+        String searchYear = String.valueOf(year);
+        ArrayList<Cost> searchCosts = new ArrayList<>();
+        try {
+            sqlCmd = conn.createStatement();
+            System.out.println("Printing all categories");
+            String test = "SELECT * FROM Cost WHERE YEAR(costDate)=" + searchYear;
+            ResultSet results = sqlCmd.executeQuery(test);
+
+            while (results.next()){
+                searchCosts.add(new Cost(
+                        results.getInt(1),
+                        results.getDouble(2),
+                        results.getString(3),
+                        getCategoryByID(results.getInt(4)),
+                        results.getString(5),
+                        results.getDate(6)
+                ));
+
+            }
+            results.close();
+            sqlCmd.close();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return searchCosts;
+    }
+
+    public ArrayList<Cost> searchCosts(int year, int month){
+        String searchYear = String.valueOf(year);
+        String searchMonth = String.valueOf(month);
+        ArrayList<Cost> searchCosts = new ArrayList<>();
+        try {
+            sqlCmd = conn.createStatement();
+            System.out.println("Printing all categories");
+            String test = "SELECT * FROM Cost WHERE YEAR(costDate)=" + searchYear + " AND MONTH(costDate)=" +searchMonth;
+            ResultSet results = sqlCmd.executeQuery(test);
+
+            while (results.next()){
+                searchCosts.add(new Cost(
+                        results.getInt(1),
+                        results.getDouble(2),
+                        results.getString(3),
+                        getCategoryByID(results.getInt(4)),
+                        results.getString(5),
+                        results.getDate(6)
+                ));
+
+            }
+            results.close();
+            sqlCmd.close();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return searchCosts;
+    }
 
     /*
         catch (SQLException sqle)

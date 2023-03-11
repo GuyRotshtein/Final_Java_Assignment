@@ -95,8 +95,9 @@ public class AddCostWindow extends JFrame {
                 String categoryName = (String) categorySelect.getSelectedItem();
                 String description = descriptionText.getText();
                 Date date = new Date(
-                        Integer.parseInt(yearText.getText()),
-                        Integer.parseInt(monthText.getText()),
+
+                        Integer.parseInt(yearText.getText())-1900,
+                        Integer.parseInt(monthText.getText())-1,
                         Integer.parseInt(dayText.getText())
                 );
                 viewModel.createCost(sum, currency, categoryName,description, date );

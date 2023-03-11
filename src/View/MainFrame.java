@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
 	private JButton btCost;
 	private JButton Category;
 	private JButton ShowCategory;
-	private JButton SearchCategory;
+	private JButton SearchCosts;
 	private JButton Add;
 	private JButton Add_catagory;
 	private JButton btAddCost;
@@ -80,9 +80,9 @@ public class MainFrame extends JFrame {
 
 
 
-		SearchCategory = new JButton("Search Category");
-		SearchCategory.addActionListener(buttonListener);
-		buttonPanel.add(SearchCategory);
+		SearchCosts = new JButton("Search Expenses");
+		SearchCosts.addActionListener(windowListener);
+		buttonPanel.add(SearchCosts);
 		this.add(Box.createRigidArea(new Dimension(8, 20)));
 		this.add(buttonPanel);
 		this.add(Box.createRigidArea(new Dimension(5, 20)));
@@ -198,6 +198,11 @@ public class MainFrame extends JFrame {
 				System.out.println("source is " + e.getActionCommand());
 				System.out.println("the text is " + CatName.getText());
 				viewmodel.AddCategory(CatName.getText());
+			}
+			else if(source==SearchCosts)
+			{
+				SearchCostWindow searchCostWindow = new SearchCostWindow(viewmodel);
+
 			}
 //			textField.setText(text);
 		}

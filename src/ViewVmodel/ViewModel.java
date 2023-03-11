@@ -99,4 +99,38 @@ public class ViewModel
         derbyConnection.insertCost(newCost);
         updateTableData();
     }
+
+    public String[][] searchTableData(int year){
+        ArrayList<Cost> allCosts = derbyConnection.searchCosts(year);
+        int rows = allCosts.size();
+        if (allCosts.get(0).getDataArr().length == 0)
+        {
+            tableData = new String[rows][0];
+        }
+        else {
+            int cols = allCosts.get(0).getDataArr().length;
+            tableData = new String[rows][cols];
+        }
+        for(int r = 0; r < rows; r++){
+            tableData[r] = allCosts.get(r).getDataArr();
+        }
+        return tableData;
+    }
+    public String[][] searchTableData(int year,int month){
+        ArrayList<Cost> allCosts = derbyConnection.searchCosts(year,month);
+        int rows = allCosts.size();
+        if (allCosts.get(0).getDataArr().length == 0)
+        {
+            tableData = new String[rows][0];
+        }
+        else {
+            int cols = allCosts.get(0).getDataArr().length;
+            tableData = new String[rows][cols];
+        }
+        for(int r = 0; r < rows; r++){
+            tableData[r] = allCosts.get(r).getDataArr();
+        }
+        return tableData;
+    }
+
 }
