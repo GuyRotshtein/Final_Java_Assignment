@@ -1,10 +1,12 @@
 package Model;
 
 import View.MainFrame;
+import Model.Cost;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
@@ -25,26 +27,27 @@ public class DerbyConnection {
     private PreparedStatement psCategoryInsert, psCostInsert;
     private PreparedStatement psCategoryUpdate, psCostUpdate;
     private PreparedStatement psCategoryDelete, psCostDelete;
+    private PreparedStatement Psselectid;
 
-    private MainFrame gui;
 
-    public DerbyConnection(String[] args){
+
+//    private MainFrame gui;
+
+    public DerbyConnection(){
         System.out.println("Application starting in " + framework + " mode");
         createConnection();
         prepareDB();
-        prepareStatements();
+        //prepareStatements();
     }
 
     public void createConnection(){
         Properties props = new Properties(); // connection properties
         try {
-
-
             Class.forName(driver);
             conn = DriverManager.getConnection(protocol +  DBNAME
                     + ";create=true", props);
             System.out.println("Connected to and created database " + DBNAME);
-            conn.setAutoCommit(false);
+//            conn.setAutoCommit(false);
 
         } catch(Exception e) {
             System.out.println(e.getMessage());
@@ -55,36 +58,35 @@ public class DerbyConnection {
 
     public void prepareDB(){
         try {
-            statements = new ArrayList<>(); // DELETE LATER
-            sqlCmd = conn.createStatement();
-            statements.add(sqlCmd); // DELETE LATER
-//            deleteTables(sqlCmd);
-            createCategories(sqlCmd);
-            createCostTable(sqlCmd);
-            conn.commit();
-            getAllCategories(sqlCmd);
-            gui = new MainFrame(TABLE_COLUMNS, getCostData(sqlCmd));
+            deleteTables();
+            createCategories();
+            createCostTable();
         }
         catch (Exception e){
-            System.out.println(e.hashCode());
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
-    public void deleteTables(Statement s) throws Exception{
-        s.execute("drop table Cost ");
+    public void deleteTables() throws Exception{
+        sqlCmd = conn.createStatement();
+        sqlCmd.execute("drop table Cost ");
         System.out.println("COST table deleted");
-        s.execute("drop table Categories ");
+        sqlCmd.execute("drop table Categories ");
         System.out.println("CATEGORIES table deleted");
+        sqlCmd.close();
     }
 
-    public void createCategories(Statement s) {
+
+/*Catagory secion*/
+    public void createCategories() {
         try {
+            sqlCmd = conn.createStatement();
             String costTableSQL = "" +
                     "CREATE TABLE Categories" +
                     "(Id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), " +
                     "Name varchar(40))";
-            s.execute(costTableSQL);
+            sqlCmd.execute(costTableSQL);
+            sqlCmd.close();
             System.out.println("Created table Categories");
 
         }
@@ -97,8 +99,112 @@ public class DerbyConnection {
         }
     }
 
-    public void createCostTable(Statement s) {
+    public ArrayList<Category> getAllCategories(){
+        ArrayList<Category> result = new ArrayList<>();
+        try {
+            sqlCmd = conn.createStatement();
+            System.out.println("Printing all categories");
+            String test = "SELECT * FROM Categories";
+            ResultSet results = sqlCmd.executeQuery(test);
+            while (results.next()){
+                result.add(new Category(
+                        results.getInt(1),
+                        results.getString(2)
+                ));
+            }
+            results.close();
+            sqlCmd.close();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void insertCategory(Category cat){
         try{
+            psCategoryInsert = conn.prepareStatement(
+                    "insert into Categories (Name) values (?)");
+            psCategoryInsert.setString(1, cat.getName());
+            psCategoryInsert.executeUpdate();
+            System.out.println("Inserted Category " + cat);
+            psCategoryInsert.close();
+        } catch (Exception sqle)
+        {
+            sqle.printStackTrace();
+        }
+    }
+
+    public Category getCategoryByID(int id){
+        Category result = null;
+        try {
+            sqlCmd = conn.createStatement();
+
+            PreparedStatement getCategoryPs = conn.prepareStatement(
+                    "SELECT * FROM Categories WHERE Id = (?)");
+            getCategoryPs.setInt(1, id);
+            ResultSet resultSet = getCategoryPs.executeQuery();
+            while (resultSet.next()){
+                result = new Category(resultSet.getInt(1), resultSet.getString(2));
+            }
+            resultSet.close();
+            getCategoryPs.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public int getCategoryID(Category cat ){
+        int catID = -1;
+        try{
+            sqlCmd = conn.createStatement();
+            String sql = "SELECT * FROM Categories WHERE Name = '" + cat.getName() + "'";
+            ResultSet result = sqlCmd.executeQuery(sql);
+            while (result.next()) catID = result.getInt(1);
+            result.close();
+            sqlCmd.close();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return catID;
+    }
+
+
+
+    public boolean checkCategory(String catName)
+    {
+        boolean res;
+        try
+        {
+            String query = "SELECT * FROM Category WHERE Name=" + catName;
+            ResultSet rs = sqlCmd.executeQuery(query);
+            return rs != null;
+//            if(rs==null)
+//            {
+//                res=false;
+//            }else
+//            {
+//                res=true;
+//            }
+        } catch (SQLException sqle)
+        {
+
+            sqle.printStackTrace();
+//            printSQLException(sqle);
+            res=false;
+
+        }
+        return res;
+    }
+/*cost section*/
+    public void createCostTable() {
+        try{
+            sqlCmd = conn.createStatement();
             String createCategoriesTableSQL = "" +
                     "CREATE TABLE Cost" +
                     "(Id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), " +
@@ -107,7 +213,8 @@ public class DerbyConnection {
                     "category INTEGER REFERENCES Categories (id) NOT NULL , " +
                     "description varchar(60), " +
                     "costDate Date)";
-            s.execute(createCategoriesTableSQL);
+            sqlCmd.execute(createCategoriesTableSQL);
+            sqlCmd.close();
             System.out.println("Created table Cost");
         }
         catch(SQLException e){
@@ -118,86 +225,99 @@ public class DerbyConnection {
             }
         }
 
-
-
     }
 
-    public void prepareStatements(){
+    public ArrayList<Cost> getAllCosts(){
+        ArrayList<Cost> allCosts = new ArrayList<>();
         try {
-            psCategoryInsert = conn.prepareStatement(
-                    "insert into Categories (Name) values (?)");
+            sqlCmd = conn.createStatement();
+            System.out.println("Printing all categories");
+            String test = "SELECT * FROM Cost";
+            ResultSet results = sqlCmd.executeQuery(test);
+
+            while (results.next()){
+                allCosts.add(new Cost(
+                        results.getInt(1),
+                        results.getDouble(2),
+                        results.getString(3),
+                        getCategoryByID(results.getInt(4)),
+                        results.getString(5),
+                        results.getDate(6)
+                ));
+
+            }
+            results.close();
+            sqlCmd.close();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return allCosts;
+    }
+
+
+
+
+    /*
+    TODO - switch insertCost to recieve a Record, use the record to input the data
+     */
+    public void insertCost(Cost c){
+        try{
+            int catID = getCategoryID(c.getCategory());
             psCostInsert = conn.prepareStatement(
-                    "insert into Cost (costSum,currency,category,description,costDate)values (?,?,?,?,?)");
-            statements.add(psCostInsert);
-        } catch (SQLException e) {
+                        "insert into Cost " +
+                            "(costSum,currency,category, description, costDate)" +
+                            "values (?,?,?,?,?)");
+
+            psCostInsert.setDouble(1,c.getSum());
+            psCostInsert.setString(2,c.getCurrency());
+            psCostInsert.setInt(3,catID);
+            psCostInsert.setString(4,c.getDescription());
+            psCostInsert.setDate(5,c.getDate()); // check date class
+            psCostInsert.executeUpdate();
+            System.out.println("Inserted Record\t" + c);
+            psCategoryInsert.close();
+        } catch (SQLException sqle)
+        {
+            sqle.printStackTrace();
+        }
+    }
+    private void getCostData(Statement s)
+    {
+        try
+        {
+            System.out.println("we getCostdata in void ");
+            String rowQuery = "SELECT COUNT (*) FROM Cost";
+            System.out.println(rowQuery);
+            ResultSet rs = s.executeQuery(rowQuery);
+            while(rs.next())
+            {
+                System.out.println("id" + rs.getInt("Id"));
+                System.out.println("description"+ rs.getString("description"));
+                System.out.println("sum"+ rs.getString("costSum"));
+                System.out.println("currency" + rs.getString("currency"));
+                System.out.println("category" + rs.getInt("category"));
+
+            }
+        }
+        catch(SQLException e)
+        {
             throw new RuntimeException(e);
         }
-        statements.add(psCategoryInsert);
-    }
-
-    public void getAllCategories(Statement s) throws Exception{
-        String test = "SELECT * FROM Categories";
-        ResultSet results = s.executeQuery(test);
-        int size = results.getFetchSize();
-//        System.out.println(results.getCursorName());
 
     }
 
-    public void insertCategory(Category cat){
-        try{
-            psCategoryInsert.setString(1, cat.getName());
-            psCategoryInsert.executeUpdate();
-            System.out.println("Inserted Category");
-        } catch (SQLException sqle)
-        {
-            sqle.printStackTrace();
-//            printSQLException(sqle);
-        }
-    }
-    public void insertCategory(String catStr){
-        try{
-            psCategoryInsert.setString(1, catStr);
-            psCategoryInsert.executeUpdate();
-            System.out.println("Inserted Category");
-        } catch (SQLException sqle)
-        {
-            sqle.printStackTrace();
-//            printSQLException(sqle);
-        }
-    }
 
-    public boolean checkCategory(String catName){
-        try{
-            String query = "SELECT * FROM Category WHERE Name=" + catName;
-            ResultSet rs = sqlCmd.executeQuery(query);
-            return true;
-        } catch (SQLException sqle)
-        {
-            sqle.printStackTrace();
-//            printSQLException(sqle);
-        }
-        return true;
-    }
-    public void insertCost(double sum, String curr, int cat, String desc, Date date){
-        try{
-            psCostInsert.setDouble(1,sum);
-            psCostInsert.setString(2,curr);
-            psCostInsert.setInt(3,cat);
-            psCostInsert.setString(4,desc);
-            psCostInsert.setDate(5,date);
-            psCostInsert.executeUpdate();
-            System.out.println("Inserted Record");
-        } catch (SQLException sqle)
+    /*
+        catch (SQLException sqle)
         {
             sqle.printStackTrace();
         }
-    }
+    */
 
-    private Object[][] getCostData(Statement s) {
-        try{
-            String rowQuery = "SELECT COUNT (*) FROM Cost";
-            ResultSet rs = s.executeQuery(rowQuery);
-            int rows = 0;
+            /*
+
             if(rs.next()){
                 rows = (int)rs.getLong(1);
                 System.out.println("We found "+ rows + " rows!!");
@@ -213,12 +333,10 @@ public class DerbyConnection {
             String[][] data = new String[rows][cols];
             for(int r = 0; r < rows; r++){
                 for(int c = 0; c < cols; c++){
-//                    System.out.println(rs.getString(c));
                     data[r][c] = rs.getString(c);
                 }
             }
             return (Object[][]) data;
-//            return null;
         } catch (SQLException sqle)
         {
             sqle.printStackTrace();
@@ -227,4 +345,43 @@ public class DerbyConnection {
         return null;
     }
 
+             */
+
+            /*
+    public void insertCost(Record newRecord){
+        try{
+            psCostInsert = conn.prepareStatement("insert  into " )
+            psCategoryInsert.setString(1, catStr);
+            psCategoryInsert.executeUpdate();
+            System.out.println("Inserted Category");
+        } catch (SQLException sqle)
+        {
+            sqle.printStackTrace();
+//            printSQLException(sqle);
+        }
+    }
+    */
+
+    /*
+    public string[][] get_cost(Statement s)
+    {
+
+
+    }
+    */
+
 }
+
+/*
+    - Create a method to return all Cost
+    - Parse all expenses to 2d string array
+    - Return string array to viewmodel -> insert into the gui
+    - Managing categories - create a layout with 3/4 fields -> catName,
+    - lookup datamodels for tables
+    Add new -> ___________  add
+    ID  Name
+    1   Clothes     Edit       Delete
+
+
+
+ */

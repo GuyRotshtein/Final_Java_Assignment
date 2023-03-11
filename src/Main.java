@@ -6,11 +6,8 @@ import ViewVmodel.ViewModel;
 public class Main {
     public static void main(String[] args)
     {
-            ViewModel vm = new ViewModel(args);
+            ViewModel vm = new ViewModel();
 
-		
-    	
-    	
 //    	   // Create a HashMap
 //        HashMap<String , Integer > map = new HashMap<>();
 //        map.put("catagory",1);

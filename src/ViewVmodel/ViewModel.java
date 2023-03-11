@@ -2,11 +2,15 @@ package ViewVmodel;
 
 import Model.*;
 
-import Model.Record;
+import Model.Cost;
+import View.AddCostWindow;
 import View.MainFrame;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+
 
 public class ViewModel
 {
@@ -14,54 +18,81 @@ public class ViewModel
     private DBConnection oldDB;
     private String[] TABLE_COLUMNS = {"ID","AMOUNT", "CURRENCY" ,"CATEGORY", "DESCRIPTION", "DATE"};
     private DerbyConnection derbyConnection;
+    private String[][] tableData;
 
-    public ViewModel(String[] args){
+
+    public ViewModel(){
         DBConnection.connectDB();
-        derbyConnection = new DerbyConnection(args);
+        derbyConnection = new DerbyConnection();
         start();
+
     }
 
     public void start(){
         insertDefaultData();
-//        Object data[][] = getTableData();
-//        gui = new MainFrame(TABLE_COLUMNS, data);
-
+        gui = new MainFrame(this);
     }
 
     public void insertDefaultData(){
-//        ArrayList<Record> migration = DBConnection.getAllRecords();
-//        for(Record r : migration){
-//            derbyConnection.insertRecord(r);
-//        }
 
         ArrayList<Category> migrationCategories = oldDB.getAllCategories();
-//        derbyConnection.insertCategory(migrationCategories.get(0));
-//        for(Category cat : migrationCategories){
-//            derbyConnection.insertCategory(cat);
-//        }
-
-
-    }
-
-    private Object[][] getTableData() {
-        int rows = DBConnection.getDb().getAllRecords().size();
-        int cols = TABLE_COLUMNS.length;
-
-        String data[][] = new String[rows][cols];
-        for(int r = 0; r < rows; r++){
-            for(int c = 0; c < cols ; c++ ){
-                data[r][c] = DBConnection.getDb().getAllRecords().get(r).getDataArr()[c];
-            }
+        for(Category cat : migrationCategories){
+            derbyConnection.insertCategory(cat);
         }
 
-        return (Object[][]) data;
-//        return null;
+        ArrayList<Cost> migration = DBConnection.getAllCost();
+        for(Cost c : migration){
+            derbyConnection.insertCost(c);
+        }
+    }
 
+    public void printTableData(){
+        for(int i = 0; i < tableData.length; i++){
+            for(int j = 0; j < tableData[i].length; j++){
+                System.out.print(tableData[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }
+
+
+    private void updateTableData(){
+        ArrayList<Cost> allCosts = derbyConnection.getAllCosts();
+        int rows = allCosts.size();
+        int cols = allCosts.get(0).getDataArr().length;
+        tableData = new String[rows][cols];
+        for(int r = 0; r < rows; r++){
+            tableData[r] = allCosts.get(r).getDataArr();
+        }
+    }
+
+    public Object[][] getTableData()
+    {
+        return (Object[][]) tableData;
     }
 
     public void AddCategory(String name){
-            derbyConnection.insertCategory(name);
+        Category newCategory = new Category(name);
+        derbyConnection.insertCategory(newCategory);
     }
 
 
+    public String[] getTableColumns() {
+        return TABLE_COLUMNS;
+    }
+
+    public String[] getCategoriesArr() {
+        ArrayList<Category> allCategories = derbyConnection.getAllCategories();
+        String[] result = new String[allCategories.size()];
+        for(int i = 0; i < allCategories.size(); i++){
+            result[i] = allCategories.get(i).getName();
+        }
+        return result;
+    }
+
+    public void createCost(double sum, String currency, String categoryName, String description, Date date) {
+        Cost newCost = new Cost(sum, currency,new Category(categoryName), description, date);
+        derbyConnection.insertCost(newCost);
+        updateTableData();
+    }
 }

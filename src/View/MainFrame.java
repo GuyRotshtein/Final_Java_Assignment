@@ -1,5 +1,7 @@
 package View;
 import Model.Category;
+import ViewVmodel.ViewModel;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -9,27 +11,19 @@ import javax.swing.JScrollPane;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.border.Border;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import java.util.HashMap;
-import javax.swing.JTable;
-import javax.swing.plaf.basic.BasicOptionPaneUI;
 import javax.swing.table.DefaultTableModel;
+
 
 public class MainFrame extends JFrame {
 	/**
 	 * 
 	 */
+	ViewModel viewmodel;
 	private static final long serialVersionUID = 1L;
-	private JTable expanseTable;
+	private JTable costTable;
 	private JFrame addCostFrame;
 	private JFrame addCatFrame;
 	private JLabel addCatLabel;
@@ -37,17 +31,23 @@ public class MainFrame extends JFrame {
 	private JButton Category;
 	private JButton ShowCategory;
 	private JButton SearchCategory;
+	private JButton Add;
+	private JButton Add_catagory;
 	private JButton btAddCost;
 	private JButton btAddCat;
 	private JTable Mtable ;
 	private JTextField textField;
 	private JTextField costId, costName, costSum, costCurr, costCat, costDate;
-	private JTextField catName;
+	private JTextField CatName;
 	private ActionListener buttonListener;
 	private OpenWindowListener windowListener;
 	private JScrollPane sp;
-	public MainFrame(String[] tableColumns, Object[][] tableData)
+
+	private DefaultTableModel tableModel;
+
+	public MainFrame(ViewModel controller)
 	{
+		viewmodel = controller;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* CONTENT PANE SETUP */
 		JPanel contentPanel = new JPanel();
@@ -55,7 +55,6 @@ public class MainFrame extends JFrame {
 		this.setContentPane(contentPanel);
 		this.getContentPane().setLayout(pageLayout);
 		this.getContentPane().setBackground(Color.darkGray);
-//		buttonListener = new MyButtonListen+er();
 		windowListener = new OpenWindowListener();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* BUTTON SETUP */
@@ -64,7 +63,7 @@ public class MainFrame extends JFrame {
 		buttonPanel.setBackground(Color.darkGray);
 		buttonPanel.setLayout(new BoxLayout(buttonPanel ,BoxLayout.LINE_AXIS));
 
-		btCost = new JButton("Add Expense");
+		btCost = new JButton("Add Cost");
 		btCost.addActionListener(windowListener);
 		buttonPanel.add(btCost);
 		buttonPanel.add(Box.createRigidArea(new Dimension(8, 20)));
@@ -79,6 +78,8 @@ public class MainFrame extends JFrame {
 		buttonPanel.add(ShowCategory);
 		buttonPanel.add(Box.createRigidArea(new Dimension(8, 20)));
 
+
+
 		SearchCategory = new JButton("Search Category");
 		SearchCategory.addActionListener(buttonListener);
 		buttonPanel.add(SearchCategory);
@@ -91,32 +92,16 @@ public class MainFrame extends JFrame {
 		JPanel tablePanel = new JPanel(null);
 		tablePanel.setBackground(Color.darkGray);;
 		tablePanel.setSize(new Dimension(800, 600));
-
-		expanseTable = new JTable(tableData.length+1, tableColumns.length);
-		DefaultTableModel tableModel = new DefaultTableModel(tableData, tableColumns);
-		expanseTable.setModel(tableModel);
-		expanseTable.setGridColor(Color.GRAY);
-		expanseTable.setFont(new Font("Arial",Font.BOLD, 14));
-		JScrollPane scrollPane = new JScrollPane(expanseTable);
+		String tableColumns[] = viewmodel.getTableColumns();
+		updateTableModel();
+		costTable.setModel(tableModel);
+		costTable.setGridColor(Color.GRAY);
+		costTable.setFont(new Font("Arial",Font.BOLD, 14));
+		JScrollPane scrollPane = new JScrollPane(costTable);
 		scrollPane.setBounds(112, 0, 800, 300);
 		tablePanel.add(scrollPane);
 		this.add(tablePanel);
 		this.add(Box.createRigidArea(new Dimension(5, 20)));
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/* ADD COST FRAME SETUP */
-		addCostFrame = new JFrame("Add new cost");
-		JPanel addCostPanel = new JPanel();
-		BoxLayout AddCostBoxLayout = new BoxLayout(addCostPanel,BoxLayout.PAGE_AXIS);
-
-		addCostFrame.setContentPane(addCostPanel);
-		addCostFrame.getContentPane().setLayout(AddCostBoxLayout);
-		addCostFrame.getContentPane().setBackground(Color.darkGray);
-		textField = new JTextField(12);
-		addCostPanel.add(textField);
-		addCostFrame.add(Box.createRigidArea(new Dimension(8, 20)));
-		addCostFrame.setSize(512,400);
-		addCostFrame.setVisible(false);
-		addCostFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* ADD COST FRAME BUTTON SETUP */
@@ -143,11 +128,11 @@ public class MainFrame extends JFrame {
 //		addCatTextPanel.setLayout(new BoxLayout(addCatTextPanel,BoxLayout.PAGE_AXIS));
 		addCatLabel = new JLabel("New category's name:");
 		addCatLabel.setForeground(Color.gray);
-		catName = new JTextField(30);
+		CatName = new JTextField(30);
 
 
 		addCatTextPanel.add(Box.createRigidArea(new Dimension(5, 20)));
-		addCatTextPanel.add(catName);
+		addCatTextPanel.add(CatName);
 
 		addCatPanel.add(Box.createRigidArea(new Dimension(5, 40)));
 		addCatPanel.add(addCatLabel);
@@ -158,14 +143,15 @@ public class MainFrame extends JFrame {
 		JPanel catButtonPanel = new JPanel();
 		catButtonPanel.setBackground(Color.darkGray);
 		btAddCat = new JButton("Add to Categories");
-		btAddCat.addActionListener(buttonListener);
+		btAddCat.addActionListener(windowListener);
 		catButtonPanel.add(btAddCat);
 
 		addCatPanel.add(Box.createRigidArea(new Dimension(8, 20)));
 		addCatPanel.add(catButtonPanel);
 		addCatPanel.add(Box.createRigidArea(new Dimension(5, 20)));
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/* ADD Delete Edit */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* FINAL SETUP */
 
@@ -177,7 +163,13 @@ public class MainFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void updateTableModel() {
+		Object[][] tableData = viewmodel.getTableData();
+		costTable = new JTable(tableData.length+1, tableColumns.length);
+		tableModel = new DefaultTableModel(tableData, tableColumns);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* ACTION LISTENER SETUP */
 	class OpenWindowListener implements ActionListener
 	{
@@ -187,15 +179,25 @@ public class MainFrame extends JFrame {
 			Object source = e.getSource();
 			if(source==btCost)
 			{
-				addCostFrame.setVisible(true);
-				text = "";
+				AddCostWindow addCostWindow = new AddCostWindow(viewmodel);
 			}
 			else if(source==Category)
 			{
 				addCatFrame.setVisible(true);
-				catName.setText("");
+				CatName.setText("");
+				System.out.println("catname is " + CatName.getText());
+				System.out.println("source is " + e.getActionCommand());
+				source = e.getSource();
+
 			}
-			textField.setText(text);
+			else if(source==btAddCat)
+			{
+				System.out.println("trilili trala");
+				System.out.println("source is " + e.getActionCommand());
+				System.out.println("the text is " + CatName.getText());
+				viewmodel.AddCategory(CatName.getText());
+			}
+//			textField.setText(text);
 		}
 	}
 

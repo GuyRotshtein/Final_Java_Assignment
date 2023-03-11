@@ -6,18 +6,19 @@ import java.util.HashMap;
 public class DBSimulate {
 	
 	private static int CATEGORY_COUNTER = 0;
-	private static int RECORD_COUNTER = 0;
+	private static int Cost_COUNTER = 0;
 	
 	private HashMap<Integer, Category> categories;
-	private HashMap<Integer, Record> records;
+	private HashMap<Integer, Cost> costs;
 	
 	public DBSimulate() {
 		categories = new HashMap<>();
-		records = new HashMap<>();
+		costs = new HashMap<>();
 	}
 	
-	public void addRecord(Record record) {
-		records.put(RECORD_COUNTER++, new Record(RECORD_COUNTER, record.getSum(), record.getCurrency(), record.getCategory(), record.getDescription(), record.getDate()));
+	public void addCost(Cost cost) {
+		costs.put(Cost_COUNTER++, new Cost(Cost_COUNTER, cost.getSum(), cost.getCurrency(), cost.getCategory(),
+				cost.getDescription(), cost.getDate()));
 	}
 	
 	public void addCategory(Category category) {
@@ -25,16 +26,16 @@ public class DBSimulate {
 	}
 	
 	
-	public Record getRecord(Record record) {
-		return records.get(record.getId());
+	public Cost getCpst(Cost cost) {
+		return costs.get(cost.getId());
 	}
 	
 	public Category getCategory(Category category) {
 		return categories.get(category.getId());
 	}
 	
-	public void updateRecord(Record old, Record updated) {
-		records.put(old.getId(), updated);
+	public void updateCost(Cost old, Cost updated) {
+		costs.put(old.getId(), updated);
 	}
 	
 	public void updateCategory(Category old, Category updated) {
@@ -43,8 +44,8 @@ public class DBSimulate {
 	
 	
 	
-	public void deleteRecord(Record record) {
-		records.remove(record.getId());
+	public void deleteRecord(Cost cost) {
+		costs.remove(cost.getId());
 	}
 	
 	public void deleteCategory(Category category) {
@@ -52,10 +53,10 @@ public class DBSimulate {
 	}
 	
 	
-	public ArrayList<Record> getAllRecords() {
-		ArrayList<Record> result = new ArrayList<>();
-		for(Integer key : records.keySet()) {
-			result.add(records.get(key));
+	public ArrayList<Cost> getAllCost() {
+		ArrayList<Cost> result = new ArrayList<>();
+		for(Integer key : costs.keySet()) {
+			result.add(costs.get(key));
 		}
 		return result;
 	}
@@ -77,8 +78,8 @@ public class DBSimulate {
 		}
 		
 		result += "\nRecords:";
-		for(Integer key : records.keySet()) {
-			result += "\n\t" + key + ".\t" + records.get(key).toString();
+		for(Integer key : costs.keySet()) {
+			result += "\n\t" + key + ".\t" + costs.get(key).toString();
 		}
 				
 		

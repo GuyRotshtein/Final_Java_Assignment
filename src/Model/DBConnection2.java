@@ -131,37 +131,37 @@ public class DBConnection2 {
             printSQLException(sqle);
         }
     }
-
-    public void deleteTables(Statement s){
-        try {
-            s.execute("drop table Cost ");
-            System.out.println("COST table deleted");
-            s.execute("drop table Categories ");
-            System.out.println("CATEGORIES table deleted");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-
-    }
-
-    //Insert a cost record into the Cost table
-    public void insertRecord(Record rec){
-        try{
-            psCostInsert.setInt(1,rec.getId());
-            psCostInsert.setDouble(2,rec.getSum());
-            psCostInsert.setString(3,rec.getCurrency());
-            psCostInsert.setString(4,rec.getCategory().getName());
-            psCostInsert.setString(5,rec.getDescription());
-            psCostInsert.setDate(6,Date.valueOf(rec.getDate()));
-            psCostInsert.executeUpdate();
-            System.out.println("Inserted Record");
-        } catch (SQLException sqle)
-        {
-            printSQLException(sqle);
-        }
-    }
+//
+//    public void deleteTables(Statement s){
+//        try {
+//            s.execute("drop table Cost ");
+//            System.out.println("COST table deleted");
+//            s.execute("drop table Categories ");
+//            System.out.println("CATEGORIES table deleted");
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//
+//
+//    }
+//
+//    //Insert a cost record into the Cost table
+//    public void insertCost(Cost rec){
+//        try{
+//            psCostInsert.setInt(1,rec.getId());
+//            psCostInsert.setDouble(2,rec.getSum());
+//            psCostInsert.setString(3,rec.getCurrency());
+//            psCostInsert.setString(4,rec.getCategory().getName());
+//            psCostInsert.setString(5,rec.getDescription());
+//            psCostInsert.setDate(6,Date.valueOf(rec.getDate()));
+//            psCostInsert.executeUpdate();
+//            System.out.println("Inserted Record");
+//        } catch (SQLException sqle)
+//        {
+//            printSQLException(sqle);
+//        }
+//    }
 
     //Insert a category into the Category table
     public void insertCategory(Category cat){

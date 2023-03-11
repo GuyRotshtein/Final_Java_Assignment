@@ -1,8 +1,8 @@
 package Model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class DBConnection {
 	
@@ -17,24 +17,24 @@ public class DBConnection {
 	}
 	
 	// Record queries
-	public static void addRecord(Record record) {
-		db.addRecord(record);
+	public static void addCost(Cost cost) {
+		db.addCost(cost);
 	}
-	public static void deleteRecord(Record record) {
-		db.deleteRecord(record);
+	public static void deleteCost(Cost cost) {
+		db.deleteRecord(cost);
 	}
-	public static void updateRecord(Record old, Record updated) {
-		db.updateRecord(old, updated);
+	public static void updateCost(Cost old, Cost updated) {
+		db.updateCost(old, updated);
 	}
-	public static Record getRecord(Record record) {
-		Record queryResult = db.getRecord(record);
-		return createRecordFromQuery(queryResult);
-		
-	}
-	public static ArrayList<Record> getAllRecords() {
-		ArrayList<Record> result = new ArrayList<>();
-		for(Record record : db.getAllRecords()) {
-			result.add(createRecordFromQuery(record));
+//	public static Cost getCost(Cost cost) {
+//		Cost queryResult = db.getCost(cost);
+//		return createCostFromQuery(queryResult);
+//
+//	}
+	public static ArrayList<Cost> getAllCost() {
+		ArrayList<Cost> result = new ArrayList<>();
+		for(Cost cost : db.getAllCost()) {
+			result.add(createCostFromQuery(cost));
 		}
 		return result;
 	}
@@ -42,13 +42,13 @@ public class DBConnection {
 		
 	}
 	
-	public static Record createRecordFromQuery(Record queryResult) {
+	public static Cost createCostFromQuery(Cost queryResult) {
 		int id = queryResult.getId();
 		Category category = new Category(queryResult.getCategory().getId(), queryResult.getCategory().getName());
 		String description = queryResult.getDescription();
 		double sum = queryResult.getSum();
 		String currency = queryResult.getCurrency();
-		return new Record(id, sum, currency ,category, description, queryResult.getDate());
+		return new Cost(id, sum, currency ,category, description, queryResult.getDate());
 	}
 	
 	// Category queries
@@ -82,8 +82,8 @@ public class DBConnection {
 	public static void loadMockData() {
 		Category clothing = new Category("Clothing");
 		Category bills = new Category("Bills");
-		Category food = new Category("food");
-		Category entertainment = new Category("etertainment");
+		Category food = new Category("Food");
+		Category entertainment = new Category("Entertainment");
 		Category games = new Category("Games");
 		
 		addCategory(clothing);
@@ -93,24 +93,57 @@ public class DBConnection {
 		addCategory(games);
 		
 		String currency = "ILS";
+
+
+
+		Cost rec1 = new Cost(
+				150, currency ,games,
+				"Hogwarts Legacy",
+				new Date(2023, 2, 15)
+		);
+		Cost rec2 = new Cost(
+				2000, currency ,bills,
+				"Rent",
+				new Date(2023, 2, 11));
+
+		Cost rec3 = new Cost(
+				1500,currency ,food,
+				"Junk Food",
+				new Date(2023, 2, 5));
+
+		Cost rec4 = new Cost(
+				50, currency ,entertainment,
+				"Netflix",
+				new Date(2023, 2, 1));
+
+		Cost rec5 = new Cost(
+				30, currency ,entertainment,
+				"Spotify",
+				new Date(2023,2,	1));
+
+		Cost rec6 = new Cost(
+				300, currency ,entertainment,
+				"Concert",
+				new Date(2023, 2, 8));
+
+		Cost rec7 = new Cost(
+				3000, currency ,bills,
+				"Tax",
+				new Date(2023,2, 20));
+
+		Cost rec8 = new Cost(
+				500, currency ,entertainment,
+				"Plane tickets",
+				new Date(2023, 2, 20));
 		
-		Record rec1 = new Record(150, currency ,games, "Hogwarts Legacy", LocalDate.of(2023, 2, 15));
-		Record rec2 = new Record(2000, currency ,bills, "Rent", LocalDate.of(2023, 2, 11));
-		Record rec3 = new Record(1500, currency ,food, "Junk Food", LocalDate.of(2023, 2, 5));
-		Record rec4 = new Record(50, currency ,entertainment, "Netflix", LocalDate.of(2023, 2, 1));
-		Record rec5 = new Record(30, currency ,entertainment, "Spotify", LocalDate.of(2023, 2, 1));
-		Record rec6 = new Record(300, currency ,entertainment, "Concert", LocalDate.of(2023, 2, 8));
-		Record rec7 = new Record(3000, currency ,bills, "Tax", LocalDate.of(2023, 2, 20));
-		Record rec8 = new Record(500, currency ,entertainment, "Plane tickets", LocalDate.of(2023, 2, 20));
-		
-		addRecord(rec1);
-		addRecord(rec2);
-		addRecord(rec3);
-		addRecord(rec4);
-		addRecord(rec5);
-		addRecord(rec6);
-		addRecord(rec7);
-		addRecord(rec8);
+		addCost(rec1);
+		addCost(rec2);
+		addCost(rec3);
+		addCost(rec4);
+		addCost(rec5);
+		addCost(rec6);
+		addCost(rec7);
+		addCost(rec8);
 		
 //		System.out.println(db);
 	}

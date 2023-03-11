@@ -1,21 +1,19 @@
 package Model;
-
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import Exceptions.InvalidRecordException;
 
+import java.sql.Date;
 
-public class Record
+
+public class Cost
 {
 	private int id;
 	private double sum;
 	private String currency;
 	private Category category;
 	private String description;
-	private LocalDate date;
+	private Date date;
 	
-	public Record(double sum, String currency, Category category, String description, LocalDate date) {
+	public Cost(double sum, String currency, Category category, String description, Date date) {
 		super();
 		this.sum = sum;
 		this.currency = currency;
@@ -24,7 +22,7 @@ public class Record
 		this.date = date;
 	}
 	
-	public Record(int id, double sum, String currency ,Category category, String description, LocalDate date) {
+	public Cost(int id, double sum, String currency ,Category category, String description, Date date) {
 		super();
 		this.id = id;
 		this.sum = sum;
@@ -53,17 +51,17 @@ public class Record
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
-
+/*
 	public Date getRecordDate(){
 		ZoneId defaultZoneID = ZoneId.systemDefault();
 		Date actualDate = Date.from(getDate().atStartOfDay(defaultZoneID).toInstant());
 		return actualDate;
 	}
-
-	public void setDate(LocalDate date) {
+*/
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
