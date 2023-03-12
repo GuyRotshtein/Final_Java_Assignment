@@ -1,3 +1,4 @@
+/* page we connect the system to the derby*/
 package Model;
 
 import java.sql.Date;
@@ -10,16 +11,18 @@ public class DBConnection {
 	
 
 
-
+	/*connection to the derby*/
 	public static void connectDB() {
 		db = new DBSimulate();
 		loadMockData();
 	}
 	
-	// Record queries
+	/* add new Cost the  derby*/
 	public static void addCost(Cost cost) {
 		db.addCost(cost);
 	}
+
+	/*delete cost*/
 	public static void deleteCost(Cost cost) {
 		db.deleteRecord(cost);
 	}
