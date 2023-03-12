@@ -26,14 +26,13 @@ public class DBConnection {
 	public static void deleteCost(Cost cost) {
 		db.deleteRecord(cost);
 	}
+
+	/*update the cost */
 	public static void updateCost(Cost old, Cost updated) {
 		db.updateCost(old, updated);
 	}
-//	public static Cost getCost(Cost cost) {
-//		Cost queryResult = db.getCost(cost);
-//		return createCostFromQuery(queryResult);
-//
-//	}
+
+	/*get all the Cost from the database*/
 	public static ArrayList<Cost> getAllCost() {
 		ArrayList<Cost> result = new ArrayList<>();
 		for(Cost cost : db.getAllCost()) {
@@ -41,10 +40,11 @@ public class DBConnection {
 		}
 		return result;
 	}
-	public static void getRecordsFromDateToDate(Date from, Date to) {
+	/*get all the costs f*/
+	public static void getCostsFromDateToDate(Date from, Date to) {
 		
 	}
-	
+	/*return the cost as string */
 	public static Cost createCostFromQuery(Cost queryResult) {
 		int id = queryResult.getId();
 		Category category = new Category(queryResult.getCategory().getId(), queryResult.getCategory().getName());
@@ -54,7 +54,7 @@ public class DBConnection {
 		return new Cost(id, sum, currency ,category, description, queryResult.getDate());
 	}
 	
-	// Category queries
+	/* Category queries return all Categories*/
 	public static ArrayList<Category> getAllCategories() {
 		ArrayList<Category> result = new ArrayList<>();
 		for(Category category : db.getAllCategories()) {
@@ -63,25 +63,32 @@ public class DBConnection {
 			
 		return db.getAllCategories();
 	}
+
+	/* get Category from the database  */
 	public static Category getCategory(Category category) {
 		Category queryResult = db.getCategory(category);
 		return createCategoryFromQuery(queryResult);
 	}
+
+	/*check fo the add category*/
 	public static void addCategory(Category category) {
 		db.addCategory(new Category(category.getId(), category.getName()));
 	}
+
+	/*delete Category*/
 	public static void deleteCategory(Category category) {
 		db.deleteCategory(category);
 		
 	}
-	
+
+	/*create Category from Query */
 	public static Category createCategoryFromQuery(Category queryResult) {
 		int id = queryResult.getId();
 		String name = queryResult.getName();
 		return new Category(id, name);
 	}
 	
-	// Mock Data
+	/* Mock Data*/
 	public static void loadMockData() {
 		Category clothing = new Category("Clothing");
 		Category bills = new Category("Bills");

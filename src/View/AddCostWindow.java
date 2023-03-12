@@ -10,11 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.Arrays;
-
+/*this is the Add cost frame*/
 public class AddCostWindow extends JFrame {
 
+    /*view model obj*/
     private ViewModel viewModel;
-
+    /* add the cost window create view model who will contact the database and exchange the data */
     public AddCostWindow(ViewModel controller){
         viewModel = controller;
         this.setTitle("Add new cost");
@@ -32,6 +33,7 @@ public class AddCostWindow extends JFrame {
         sumPanel.add(sumText);
         contentPane.add(sumPanel);
 //-------------------------------------------------------
+        /*category add label in the add cost panel*/
         JPanel categoryPanel = generateFieldPanel();
         JLabel categoryLbl = generateLabel("Category");
         String[] categories = viewModel.getCategoriesArr();
@@ -50,6 +52,7 @@ public class AddCostWindow extends JFrame {
         categoryPanel.add(categorySelect);
         contentPane.add(categoryPanel);
 //-------------------------------------------------------
+        /*Currency add label in the add cost panel*/
         JPanel currencyPanel = generateFieldPanel();
         JLabel currencyLbl = generateLabel("Currency");
         JTextField currencyText = new JTextField(20);
@@ -57,6 +60,7 @@ public class AddCostWindow extends JFrame {
         currencyPanel.add(currencyText);
         contentPane.add(currencyPanel);
 //-------------------------------------------------------
+        /*Description add label in the add cost panel*/
         JPanel descriptionPanel = generateFieldPanel();
         JLabel descriptionLbl = generateLabel("Description");
         JTextField descriptionText = new JTextField(20);
@@ -64,6 +68,7 @@ public class AddCostWindow extends JFrame {
         descriptionPanel.add(descriptionText);
         contentPane.add(descriptionPanel);
 //-------------------------------------------------------
+        /*Date add label in the add cost panel*/
         JPanel datePanel = generateFieldPanel();
         JLabel dateLbl = generateLabel("Date");
         JPanel dateInputsPanel = generateFieldPanel();
@@ -85,10 +90,11 @@ public class AddCostWindow extends JFrame {
         datePanel.add(dateInputsPanel);
         this.getContentPane().add(datePanel);
 //-------------------------------------------------------
-
+    /* the add cost button */
         JButton addBtn = new JButton("Add Cost");
         this.getContentPane().add(addBtn);
         addBtn.addActionListener(new ActionListener() {
+            /*deducted the  button was click*/
             public void actionPerformed(ActionEvent e) {
                 double sum = Double.parseDouble(sumText.getText());
                 String currency = currencyText.getText();
@@ -105,7 +111,7 @@ public class AddCostWindow extends JFrame {
 
             }
         });
-
+        /*the size of the frame*/
         this.setSize(512,400);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -113,14 +119,14 @@ public class AddCostWindow extends JFrame {
 
 
     }
-
+    /*generate the field panel */
     public JPanel generateFieldPanel(){
         JPanel result = new JPanel();
         BoxLayout panelLayout = new BoxLayout(result, BoxLayout.X_AXIS);
         result.setBackground(Color.DARK_GRAY);
         return result;
     }
-
+    /*generate the field text */
     public JLabel generateLabel(String text){
         JLabel result = new JLabel(text);
         result.setForeground(Color.WHITE);

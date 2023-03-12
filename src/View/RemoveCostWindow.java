@@ -18,6 +18,8 @@ public class RemoveCostWindow extends JFrame {
 
     private ViewModel viewModel;
 
+    /*remove cost window frame establish*/
+
     public RemoveCostWindow(ViewModel controller) {
         viewModel = controller;
         this.setTitle("Remove Expense");
@@ -61,13 +63,14 @@ public class RemoveCostWindow extends JFrame {
         this.setVisible(true);
     }
 
+    /*field panel creation and generate*/
     public JPanel generateFieldPanel(){
         JPanel result = new JPanel();
         BoxLayout panelLayout = new BoxLayout(result, BoxLayout.X_AXIS);
         result.setBackground(Color.DARK_GRAY);
         return result;
     }
-
+    /*field label creation and generate*/
     public JLabel generateLabel(String text){
         JLabel result = new JLabel(text);
         result.setForeground(Color.WHITE);

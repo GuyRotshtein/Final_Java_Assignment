@@ -1,6 +1,6 @@
 package Model;
-
-public enum RecordCategory {
+/* the Cost Category*/
+public enum CostCategory {
 	FOOD,
 	CLOTHING,
 	BILLS,
